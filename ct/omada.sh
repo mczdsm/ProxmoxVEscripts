@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/build.func)
-# Copyright (c) 2021-2025 tteck
-# Author: tteck (tteckster)
-# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
-# Source: https://www.tp-link.com/us/support/download/omada-software-controller/
 
 APP="Omada"
 var_tags="tp-link;controller"
@@ -27,17 +23,18 @@ function update_script() {
     msg_error "No ${APP} Installation Found!"
     exit
   fi
-  latest_url=$(curl -s "https://support.omadanetworks.com/en/product/omada-software-controller/?resourceType=download" | grep -o 'https://static\.tp-link\.com/upload/software/[^"]*linux_x64[^"]*\.deb' | head -n 1)
-  latest_version=$(basename "$latest_url")
-  if [ -z "${latest_version}" ]; then
-    msg_error "It seems that the server (tp-link.com) might be down. Please try again at a later time."
-    exit
-  fi
-  echo -e "Updating Omada Controller"
-  wget -qL ${latest_url}
-  dpkg -i ${latest_version}
-  rm -rf ${latest_version}
-  echo -e "Updated Omada Controller"
+  
+  omada_url="https://static.tp-link.com/2020/202007/20200713/Omada_SDN_Controller_v4.1.5_linux_x64.deb"
+  omada_version="Omada_SDN_Controller_v4.1.5_linux_x64.deb"
+  
+  echo -e "Downloading Omada Controller 4.1.5"
+  wget -qL ${omada_url}
+  
+  echo -e "Installing Omada Controller 4.1.5"
+  dpkg -i ${omada_version}
+  
+  rm -rf ${omada_version}
+  echo -e "Installed Omada Controller 4.1.5"
   exit
 }
 
